@@ -19,7 +19,7 @@ const Container = ({ children }) => {
         <div>
           <Menu
             menuButton={
-              <div style={{ width: '30px' }}>
+              <div style={{ width: '30px', cursor: 'pointer' }}>
                 <img src="/images/avatar.webp" alt="avatar" style={{ width: '100%', borderRadius: '50%' }} />
               </div>
             }

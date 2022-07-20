@@ -4,6 +4,7 @@ import SignUp from '../pages/SignUp';
 import LogIn from '../pages/LogIn';
 import Home from '../pages/Home';
 import { listenUserState } from '../services/auth';
+import Write from '../pages/Write';
 
 function App() {
   const [isLogin, setIsLogin] = useState(false);
@@ -22,7 +23,10 @@ function App() {
     <BrowserRouter>
       <Routes>
         {isLogin ? (
-          <Route path={'/'} element={<Home />} />
+          <>
+            <Route path={'/'} element={<Home />} />
+            <Route path={'/write'} element={<Write />} />
+          </>
         ) : (
           <>
             <Route path={'/'} element={<Navigate to={'/login'} />} />
