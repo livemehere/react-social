@@ -22,7 +22,7 @@ const SignUp = () => {
   };
   console.log(getCurrentUser());
   return (
-    <div style={{ padding: '2em' }}>
+    <div style={{ padding: '2em', maxWidth: '700px', margin: 'auto' }}>
       <h1 style={{ textAlign: 'center', fontWeight: 'bold' }}>콩스타그램</h1>
       <Form
         name="basic"
@@ -53,7 +53,9 @@ const SignUp = () => {
             회원가입
           </Button>
         </Form.Item>
-        <Link to={'/login'}>이미 회원이신가요?</Link>
+        <Form.Item style={{ justifyContent: 'center' }}>
+          <Link to={'/login'}>이미 회원이신가요?</Link>
+        </Form.Item>
       </Form>
     </div>
   );
