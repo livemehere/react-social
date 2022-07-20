@@ -1,6 +1,11 @@
 import React from 'react';
+import Container from '../../layouts/Container';
 
 const Home = () => {
-  return <div>Home</div>;
+  return (
+    <Container>
+      <div>Home</div>
+    </Container>
+  );
 };
 export default Home;

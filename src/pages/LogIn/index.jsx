@@ -1,51 +1,46 @@
 import React from 'react';
-import { Button, Checkbox, Form, Input } from 'antd';
+import { Button, Form, Input } from 'antd';
+import { Link } from 'react-router-dom';
+import { login } from '../../services/auth';
 
 const LogIn = () => {
   const onFinish = values => {
-    console.log('Success:', values);
-  };
-
-  const onFinishFailed = errorInfo => {
-    console.log('Failed:', errorInfo);
+    const { email, password } = values;
+    login(email, password).catch(err => {
+      if (err.message === 'Firebase: Error (auth/wrong-password).') {
+        return alert('비밀번호가 일치하지 않습니다');
+      } else {
+        return alert(err.message);
+      }
+    });
   };
 
   return (
-    <div>
+    <div style={{ padding: '2em' }}>
+      <h1 style={{ textAlign: 'center', fontWeight: 'bold' }}>콩스타그램</h1>
+
       <Form
         name="basic"
-        labelCol={{ span: 8 }}
+        labelCol={{ span: 4 }}
         wrapperCol={{ span: 16 }}
         initialValues={{ remember: true }}
         onFinish={onFinish}
-        onFinishFailed={onFinishFailed}
         autoComplete="off"
       >
-        <Form.Item
-          label="Username"
-          name="username"
-          rules={[{ required: true, message: 'Please input your username!' }]}
-        >
+        <Form.Item label="이메일" name="email" rules={[{ required: true, message: '이메일을 입력해주세요' }]}>
           <Input />
         </Form.Item>
 
-        <Form.Item
-          label="Password"
-          name="password"
-          rules={[{ required: true, message: 'Please input your password!' }]}
-        >
+        <Form.Item label="비밀번호" name="password" rules={[{ required: true, message: '비밀번호를 입력해주세요' }]}>
           <Input.Password />
         </Form.Item>
 
-        <Form.Item name="remember" valuePropName="checked" wrapperCol={{ offset: 8, span: 16 }}>
-          <Checkbox>Remember me</Checkbox>
-        </Form.Item>
-
-        <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
-          <Button type="primary" htmlType="submit">
-            Submit
+        <Form.Item style={{ justifyContent: 'center', marginBottom: '5px' }}>
+          <Button type="primary" htmlType="submit" style={{ width: '100%' }}>
+            로그인
           </Button>
         </Form.Item>
+        <Link to={'/signup'}>아직 회원이 아니신가요?</Link>
       </Form>
     </div>
   );

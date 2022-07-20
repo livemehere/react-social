@@ -1,11 +1,26 @@
 import React from 'react';
 import { Button, Form, Input } from 'antd';
-
+import { getCurrentUser, signUpUser } from '../../services/auth';
+import { Link } from 'react-router-dom';
 const SignUp = () => {
-  const onFinish = values => {
-    console.log('Success:', values);
-  };
+  const onFinish = async values => {
+    const { email, password, passwordCheck } = values;
+    if (password !== passwordCheck) {
+      return alert('비밀번호가 일치하지 않습니다');
+    }
 
+    if (password.trim().length === 0) {
+      return alert('공백 외 문자를 채워주세요');
+    }
+
+    const result = await signUpUser(email, password);
+    if (result.result) {
+      alert(result.message);
+    } else {
+      return alert(result.message);
+    }
+  };
+  console.log(getCurrentUser());
   return (
     <div style={{ padding: '2em' }}>
       <h1 style={{ textAlign: 'center', fontWeight: 'bold' }}>콩스타그램</h1>
@@ -28,16 +43,17 @@ const SignUp = () => {
         </Form.Item>
         <Form.Item
           label="비밀번호 확인"
-          name="password-check"
+          name="passwordCheck"
           rules={[{ required: true, message: '비밀번호를 입력해주세요' }]}
         >
           <Input.Password />
         </Form.Item>
-        <Form.Item style={{ justifyContent: 'center' }}>
+        <Form.Item style={{ justifyContent: 'center', marginBottom: '5px' }}>
           <Button type="primary" htmlType="submit" style={{ width: '100%' }}>
             회원가입
           </Button>
         </Form.Item>
+        <Link to={'/login'}>이미 회원이신가요?</Link>
       </Form>
     </div>
   );
