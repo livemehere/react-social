@@ -19,6 +19,7 @@ function App() {
     });
     return () => unsubscribe();
   });
+
   return (
     <BrowserRouter>
       <Routes>
@@ -34,7 +35,7 @@ function App() {
             <Route path={'/signup'} element={<SignUp />} />
           </>
         )}
-        <Route path={'*'} element={<Navigate to={'/'} />} />
+        {/*<Route path={'*'} element={<Navigate to={'/'} />} />*/}
       </Routes>
     </BrowserRouter>
   );

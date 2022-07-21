@@ -13,9 +13,12 @@ const Container = ({ children }) => {
         style={{
           display: 'flex',
           justifyContent: 'space-between',
+          padding: '0 10px',
         }}
       >
-        <h1 style={{ color: 'white', fontSize: '1.3rem', fontWeight: 'bold' }}>Konstagram</h1>
+        <Link to={'/'}>
+          <h1 style={{ color: 'white', fontSize: '1.3rem', fontWeight: 'bold' }}>Konstagram</h1>
+        </Link>
         <div>
           <Menu
             menuButton={
@@ -24,12 +27,12 @@ const Container = ({ children }) => {
               </div>
             }
           >
-            <MenuItem>
-              <Link to={`/info/${1}`}>내 정보</Link>
-            </MenuItem>
-            <MenuItem>
-              <Link to={`?userid=${1}`}>내 게시글</Link>
-            </MenuItem>
+            <Link to={`/profile/${'myuserId'}`}>
+              <MenuItem>내 정보</MenuItem>
+            </Link>
+            <Link to={`?userid=${1}`}>
+              <MenuItem>내 게시글</MenuItem>
+            </Link>
             <MenuItem onClick={() => logOut()}>로그아웃</MenuItem>
           </Menu>
         </div>
