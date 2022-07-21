@@ -1,16 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import Article from '../Article';
-import { getAllDocs } from '../../services/db';
+import { useArticles } from '../../hooks/useArticles';
 
 const ActicleList = () => {
-  const [data, setData] = useState([]);
-  useEffect(() => {
-    getAllDocs('articles').then(articles => {
-      console.log(articles);
-      setData(articles);
-    });
-  }, []);
-
+  const { data } = useArticles();
   return (
     <>
       {data.map(d => (
