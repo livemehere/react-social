@@ -2,14 +2,14 @@ import React, { useState, useCallback } from 'react';
 import { Divider, Button, Spin, Typography } from 'antd';
 import styled from 'styled-components';
 import { EllipsisOutlined, HeartOutlined, HeartFilled, MessageOutlined } from '@ant-design/icons';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import ImageSlider from '../Carousel';
 
 const Article = ({ data }) => {
-  const [loading] = useState(false);
   const [showMenu, setShowMenu] = useState(false);
   const [isOwner] = useState(true);
   const [isLike, setIsLike] = useState(false);
+  const navigate = useNavigate();
 
   const toggleMenu = useCallback(
     e => {
@@ -26,9 +26,11 @@ const Article = ({ data }) => {
   const onClickLike = useCallback(() => {
     setIsLike(prev => !prev);
   }, [isLike]);
-  const onClickComment = useCallback(() => {}, []);
+  const onClickComment = useCallback(() => {
+    navigate(`/detail/${data.id}`);
+  }, []);
 
-  if (loading) {
+  if (!data) {
     return (
       <div style={{ width: '100%', height: '300px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
         <Spin size="large" />
@@ -42,7 +44,7 @@ const Article = ({ data }) => {
         <div className="profile">
           <img src="/images/avatar.webp" alt="profile" />
           <h5>
-            <Link to={`/profile/${'userID'}`}>{data.username}</Link>
+            <Link to={`?userid=${data.userUID}`}>{data.username}</Link>
           </h5>
         </div>
         <MenuWrapper isOwner={isOwner}>

@@ -5,6 +5,7 @@ import LogIn from '../pages/LogIn';
 import Home from '../pages/Home';
 import { listenUserState } from '../services/auth';
 import Write from '../pages/Write';
+import Detail from '../pages/Detail';
 
 function App() {
   const [isLogin, setIsLogin] = useState(false);
@@ -27,6 +28,7 @@ function App() {
           <>
             <Route path={'/'} element={<Home />} />
             <Route path={'/write'} element={<Write />} />
+            <Route path={'/detail/:id'} element={<Detail />} />
           </>
         ) : (
           <>

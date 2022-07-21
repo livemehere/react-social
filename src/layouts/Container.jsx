@@ -4,7 +4,7 @@ import { Content, Header } from 'antd/es/layout/layout';
 import { Menu, MenuItem } from '@szhsin/react-menu';
 import '@szhsin/react-menu/dist/core.css';
 import { Link } from 'react-router-dom';
-import { logOut } from '../services/auth';
+import { getCurrentUser, logOut } from '../services/auth';
 
 const Container = ({ children }) => {
   return (
@@ -30,7 +30,7 @@ const Container = ({ children }) => {
             <Link to={`/profile/${'myuserId'}`}>
               <MenuItem>내 정보</MenuItem>
             </Link>
-            <Link to={`?userid=${1}`}>
+            <Link to={`?userid=${getCurrentUser().uid}`}>
               <MenuItem>내 게시글</MenuItem>
             </Link>
             <MenuItem onClick={() => logOut()}>로그아웃</MenuItem>

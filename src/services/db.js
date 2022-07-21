@@ -1,9 +1,20 @@
 import { db } from './firebase';
-import { collection, addDoc, updateDoc, deleteDoc, doc, getDocs } from 'firebase/firestore';
+import { collection, addDoc, updateDoc, deleteDoc, doc, getDocs, getDoc } from 'firebase/firestore';
 
 export async function addDocInCollection(targetCollection, data) {
   const docRef = await addDoc(collection(db, targetCollection), data);
   return docRef;
+}
+
+export async function getOneDoc(collection, docId) {
+  const docRef = doc(db, collection, docId);
+  const docSnap = await getDoc(docRef);
+
+  if (docSnap.exists()) {
+    return docSnap.data();
+  } else {
+    return null;
+  }
 }
 
 export async function getAllDocs(targetCollection) {

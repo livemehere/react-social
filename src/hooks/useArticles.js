@@ -4,14 +4,14 @@ import { getAllDocs } from '../services/db';
 export function useArticles() {
   const [data, setData] = useState([]);
   useEffect(() => {
-    refech();
+    refetch();
   }, []);
 
-  const refech = () => {
+  const refetch = () => {
     getAllDocs('articles').then(articles => {
       setData(articles);
     });
   };
 
-  return { data, refech, setData };
+  return { data, refetch, setData };
 }
