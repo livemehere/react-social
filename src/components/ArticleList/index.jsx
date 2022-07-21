@@ -1,12 +1,20 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Article from '../Article';
+import { getAllDocs } from '../../services/db';
 
 const ActicleList = () => {
-  const [data] = useState([0, 0, 0, 0, 0]);
+  const [data, setData] = useState([]);
+  useEffect(() => {
+    getAllDocs('articles').then(articles => {
+      console.log(articles);
+      setData(articles);
+    });
+  }, []);
+
   return (
     <>
-      {data.map((d, idx) => (
-        <Article key={idx} />
+      {data.map(d => (
+        <Article data={d} key={d.id} />
       ))}
     </>
   );

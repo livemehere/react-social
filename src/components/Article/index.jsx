@@ -1,13 +1,15 @@
 import React, { useState, useCallback } from 'react';
-import { Skeleton, Divider } from 'antd';
+import { Divider, Button, Spin, Typography } from 'antd';
 import styled from 'styled-components';
-import { EllipsisOutlined } from '@ant-design/icons';
+import { EllipsisOutlined, HeartOutlined, HeartFilled, MessageOutlined } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
+import ImageSlider from '../Carousel';
 
-const Article = () => {
+const Article = ({ data }) => {
   const [loading] = useState(false);
-  const [showMenu, setShowMenu] = useState(true);
+  const [showMenu, setShowMenu] = useState(false);
   const [isOwner] = useState(true);
+  const [isLike, setIsLike] = useState(false);
 
   const toggleMenu = useCallback(
     e => {
@@ -20,13 +22,27 @@ const Article = () => {
   const handleClickArticleWrapper = useCallback(() => {
     setShowMenu(false);
   }, []);
+
+  const onClickLike = useCallback(() => {
+    setIsLike(prev => !prev);
+  }, [isLike]);
+  const onClickComment = useCallback(() => {}, []);
+
+  if (loading) {
+    return (
+      <div style={{ width: '100%', height: '300px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+        <Spin size="large" />
+      </div>
+    );
+  }
+
   return (
     <ArticleWrapper onClick={handleClickArticleWrapper}>
       <Header>
         <div className="profile">
           <img src="/images/avatar.webp" alt="profile" />
           <h5>
-            <Link to={`/profile/${'userID'}`}>username</Link>
+            <Link to={`/profile/${'userID'}`}>{data.username}</Link>
           </h5>
         </div>
         <MenuWrapper isOwner={isOwner}>
@@ -40,11 +56,43 @@ const Article = () => {
           )}
         </MenuWrapper>
       </Header>
-      <div>
-        <div>slides images</div>
-        <div>INFO</div>
-      </div>
-      <Skeleton loading={loading} avatar active />
+      <AriticleContent>
+        <ImageSlider data={data.filePaths} />
+        <ArticleInfo>
+          <div>
+            <Button
+              style={{
+                fontSize: '1.05rem',
+                border: 'none',
+                background: 'transparent',
+                padding: 0,
+                marginRight: '10px',
+              }}
+              onClick={onClickLike}
+              icon={isLike ? <HeartFilled style={{ color: 'red' }} /> : <HeartOutlined />}
+            >
+              {data.like.length}
+            </Button>
+            <Button
+              style={{ fontSize: '1.205em', border: 'none', background: 'transparent', padding: 0 }}
+              onClick={onClickComment}
+              icon={<MessageOutlined />}
+            >
+              {data.comment.length}
+            </Button>
+          </div>
+          <Typography.Paragraph
+            ellipsis={{
+              rows: 2,
+              expandable: true,
+              symbol: '...더보기',
+            }}
+            title={`${'article'}--William Shakespeare`}
+          >
+            {data.content} <span style={{ color: '#999' }}>{data.createAt} 작성</span>
+          </Typography.Paragraph>
+        </ArticleInfo>
+      </AriticleContent>
     </ArticleWrapper>
   );
 };
@@ -53,7 +101,6 @@ export default Article;
 
 const ArticleWrapper = styled.div`
   width: 100%;
-  height: 300px;
   margin-bottom: 10px;
 `;
 
@@ -84,6 +131,7 @@ const MenuWrapper = styled.div`
   align-items: center;
   & .list {
     position: absolute;
+    z-index: 100;
     background-color: #fff;
     bottom: ${({ isOwner }) => (isOwner ? '-60px' : '-30px')};
     right: 0;
@@ -99,3 +147,11 @@ const MenuItem = styled.div`
     cursor: pointer;
   }
 `;
+
+const AriticleContent = styled.div`
+  display: flex;
+  flex-direction: column;
+  min-height: 300px;
+`;
+
+const ArticleInfo = styled.div``;

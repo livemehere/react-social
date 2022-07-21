@@ -2,9 +2,10 @@ import React from 'react';
 import { Button, Form, Input } from 'antd';
 import { getCurrentUser, signUpUser } from '../../services/auth';
 import { Link } from 'react-router-dom';
+import { addDocInCollection } from '../../services/db';
 const SignUp = () => {
   const onFinish = async values => {
-    const { email, password, passwordCheck } = values;
+    const { email, password, passwordCheck, name } = values;
     if (password !== passwordCheck) {
       return alert('비밀번호가 일치하지 않습니다');
     }
@@ -15,6 +16,13 @@ const SignUp = () => {
 
     const result = await signUpUser(email, password);
     if (result.result) {
+      await addDocInCollection('users', {
+        name,
+        email,
+        password,
+        uid: result.user.uid,
+        createAt: new Date(),
+      });
       alert(result.message);
     } else {
       return alert(result.message);
