@@ -1,15 +1,17 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useMemo } from 'react';
 import { Divider, Button, Spin, Typography } from 'antd';
 import styled from 'styled-components';
 import { EllipsisOutlined, HeartOutlined, HeartFilled, MessageOutlined } from '@ant-design/icons';
 import { Link, useNavigate } from 'react-router-dom';
 import ImageSlider from '../Carousel';
+import { getCurrentUser } from '../../services/auth';
+import { removeDoc } from '../../services/db';
 
 const Article = ({ data }) => {
   const [showMenu, setShowMenu] = useState(false);
-  const [isOwner] = useState(true);
   const [isLike, setIsLike] = useState(false);
   const navigate = useNavigate();
+  const isOwner = useMemo(() => getCurrentUser().uid === data.userUID, [data]);
 
   const toggleMenu = useCallback(
     e => {
@@ -30,6 +32,11 @@ const Article = ({ data }) => {
     navigate(`/detail/${data.id}`);
   }, []);
 
+  const onDelete = async () => {
+    await removeDoc('articles', data.id);
+    navigate('/');
+  };
+
   if (!data) {
     return (
       <div style={{ width: '100%', height: '300px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
@@ -47,16 +54,22 @@ const Article = ({ data }) => {
             <Link to={`?userid=${data.userUID}`}>{data.username}</Link>
           </h5>
         </div>
-        <MenuWrapper isOwner={isOwner}>
-          <EllipsisOutlined style={{ fontSize: '25px', cursor: 'pointer' }} onClick={toggleMenu} />
-          {showMenu && (
-            <div className="list">
-              <MenuItem>수정</MenuItem>
-              <Divider style={{ margin: 0 }} />
-              {isOwner && <MenuItem style={{ color: 'red' }}>삭제</MenuItem>}
-            </div>
-          )}
-        </MenuWrapper>
+        {isOwner && (
+          <MenuWrapper isOwner={isOwner}>
+            <EllipsisOutlined style={{ fontSize: '25px', cursor: 'pointer' }} onClick={toggleMenu} />
+            {showMenu && (
+              <div className="list">
+                <MenuItem>수정</MenuItem>
+                <Divider style={{ margin: 0 }} />
+                {isOwner && (
+                  <MenuItem style={{ color: 'red' }} onClick={onDelete}>
+                    삭제
+                  </MenuItem>
+                )}
+              </div>
+            )}
+          </MenuWrapper>
+        )}
       </Header>
       <AriticleContent>
         <ImageSlider data={data.filePaths} />

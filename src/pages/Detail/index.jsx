@@ -22,7 +22,7 @@ const Detail = () => {
     const res = await modifyDoc('articles', id, {
       comment: arrayUnion({
         username: getCurrentUser().displayName || '익명의 사용자',
-        userUid: getCurrentUser().uid,
+        userUID: getCurrentUser().uid,
         profileURL: getCurrentUser().photoURL || '/images/avatar.webp',
         content: commentValue,
         createAt: dayjs(new Date()).format('YYYY-MM-DD hh:mm'),
@@ -36,6 +36,8 @@ const Detail = () => {
       alert('댓글을 다는 중 오류가 발생하였습니다');
     }
   }, [loading, commentValue, id]);
+
+  if (!data) return;
 
   return (
     <Container>

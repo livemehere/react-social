@@ -37,7 +37,7 @@ const Container = ({ children }) => {
           </Menu>
         </div>
       </Header>
-      <Content>{children}</Content>
+      <Content style={{ padding: '0 10px' }}>{children}</Content>
     </Layout>
   );
 };
